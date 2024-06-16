@@ -47,11 +47,7 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
           </div>
         </div>
       </div>
-      <div class="members">
-        <NuxtLink :to="member.html_url" target="_blank" rel="noopener" v-for="member of members">
-          <img :src="member.avatar_url" class="member-avatar" />
-        </NuxtLink>
-      </div>
+      <div class="members">{{ members.length }} PUBLIC MEMBER</div>
     </div>
   </div>
 </template>
@@ -78,49 +74,28 @@ body {
   flex-direction: column;
   color: $color;
   margin: 0;
-  &::before {
-    content: '';
-    position: fixed;
-    width: calc(100% + 20rem);
-    height: calc(100% + 20rem);
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewbox='0 0 255 255'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='franctalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100vh' filter='url(%23noiseFilter)'%3E%3C/rect%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-    animation: noise 1s steps(2) infinite;
-  }
 }
-
 *::selection {
   background: $color2;
   box-sizing: border-box;
 }
-
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-shadow: 0px 0px 10px rgb(150 243 135 / 40%);
 }
-
 .card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  z-index: 99;
-  padding: 4rem;
-  border-radius: 3rem;
-  backdrop-filter: blur(6px);
-  background-color: rgb(0 0 0 / 30%);
-  box-shadow: 0px 10px 86px #0d0d0d;
-  border: 2px solid #95f386;
+  gap: 2rem;
 }
-
 .form {
   display: flex;
   flex-direction: column;
   max-width: 33rem;
+  gap: 2rem;
 }
 .content {
   display: flex;
@@ -143,13 +118,10 @@ body {
 
 .join {
   display: flex;
-  margin-top: 2rem;
   font-size: x-small;
   border: 1px solid $color;
   padding: 8px;
   border-radius: 99px;
-  /* background-color: #000; */
-  /* z-index: 99; */
 }
 .avatar {
   align-items: center;
@@ -211,77 +183,7 @@ input {
 }
 
 .members {
-  display: flex;
-  border: 2px solid #95f386;
-  padding: 0px 4px;
-  border-radius: 99px;
-  position: absolute;
-  bottom: -20px;
-  z-index: 100;
-  background: black;
-}
-
-.member-avatar {
-  margin-right: -0.25rem;
-  margin-left: -0.25rem;
-  border: 2px solid #000;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 30px;
-  width: 30px;
-  border-radius: 99px;
-}
-
-@-webkit-keyframes noise {
-  to {
-    transform: translate3d(-7rem, 0, 0);
-  }
-}
-
-@keyframes noise {
-  0% {
-    transform: translate3d(0, 9rem, 0);
-  }
-
-  10% {
-    transform: translate3d(-1rem, -4rem, 0);
-  }
-
-  20% {
-    transform: translate3d(-8rem, 2rem, 0);
-  }
-
-  30% {
-    transform: translate3d(9rem, -9rem, 0);
-  }
-
-  40% {
-    transform: translate3d(-2rem, 7rem, 0);
-  }
-
-  50% {
-    transform: translate3d(-9rem, -4rem, 0);
-  }
-
-  60% {
-    transform: translate3d(2rem, 6rem, 0);
-  }
-
-  70% {
-    transform: translate3d(7rem, -8rem, 0);
-  }
-
-  80% {
-    transform: translate3d(-9rem, 1rem, 0);
-  }
-
-  90% {
-    transform: translate3d(6rem, -5rem, 0);
-  }
-
-  to {
-    transform: translate3d(-7rem, 0, 0);
-  }
+  font-size: 10px;
+  line-height: 18px;
 }
 </style>
