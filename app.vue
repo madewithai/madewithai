@@ -167,7 +167,7 @@ form::before {
   top: -10rem;
   width: calc(100% + 20rem);
   height: calc(100% + 20rem);
-  background-image: url(noise.png);
+  background-image: url(/noise.png);
   opacity: 1;
   pointer-events: none;
   animation: noise 1s steps(2) infinite;
