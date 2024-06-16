@@ -109,6 +109,8 @@ form {
   border: 1px solid $color;
   padding: 8px;
   border-radius: 99px;
+  /* background-color: #000; */
+  /* z-index: 99; */
 }
 .avatar {
   align-items: center;
@@ -130,11 +132,14 @@ input {
   padding: 0;
   font-size: x-small;
   flex: 1 1 0%;
-  margin: 0px 8px;
+  padding: 0px 8px;
   line-height: 23px;
   text-shadow: rgba(150, 243, 135, 0.4) 0px 0px 10px;
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    padding: 23px 0px;
   }
 }
 .submit {
@@ -163,12 +168,11 @@ form::before {
   content: '';
   position: fixed;
   left: -10rem;
-  z-index: 9999;
   top: -10rem;
   width: calc(100% + 20rem);
   height: calc(100% + 20rem);
-  background-image: url(/noise.png);
-  opacity: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewbox='0 0 255 255'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='franctalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100vh' filter='url(%23noiseFilter)'%3E%3C/rect%3E%3C/svg%3E");
+  opacity: 0.35;
   pointer-events: none;
   animation: noise 1s steps(2) infinite;
 }
