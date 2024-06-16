@@ -60,8 +60,6 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
 }
 
 $color: #95f386;
-$color2: #1a4f1a;
-$glowSize: 10px;
 
 html,
 body {
@@ -76,7 +74,7 @@ body {
   margin: 0;
 }
 *::selection {
-  background: $color2;
+  background: #1a4f1a;
   box-sizing: border-box;
 }
 .container {
@@ -122,6 +120,7 @@ body {
   border: 1px solid $color;
   padding: 8px;
   border-radius: 99px;
+  box-shadow: 0px 9px 30px -15px rgb(150 243 135 / 40%);
 }
 .avatar {
   align-items: center;
@@ -151,7 +150,8 @@ input {
   }
   &::placeholder {
     padding: 23px 0px;
-    text-shadow: 0px 0px 0px;
+    text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 10px;
+    color: #999;
   }
 }
 .submit {
