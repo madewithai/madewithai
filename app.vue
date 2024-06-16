@@ -1,14 +1,11 @@
 <script setup lang="ts">
 const username = ref('');
-const { data: avatar, pending } = await useFetch(() => `https://api.github.com/users/${username.value}`, {
-  watch: [username],
-});
-
+const { data: avatar, pending } = await useFetch(() => `https://api.github.com/users/${username.value}`);
 const { data: members } = await useFetch('https://api.github.com/orgs/madewithai/members');
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 20px">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-shadow: 0px 0px 10px rgb(150 243 135 / 40%)">
     <form>
       <div class="content">
         <span class="title">
@@ -75,7 +72,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: black;
+  background: #010101;
   flex-direction: column;
   color: $color;
 }
@@ -127,7 +124,7 @@ form {
   font-size: 8px;
 }
 input {
-  background: black;
+  background: transparent;
   border: 0px;
   color: $color;
   padding: 0;
@@ -135,6 +132,7 @@ input {
   flex: 1 1 0%;
   margin: 0px 8px;
   line-height: 23px;
+  text-shadow: rgba(150, 243, 135, 0.4) 0px 0px 10px;
   &:focus {
     outline: none;
   }
@@ -149,5 +147,81 @@ input {
   gap: 8px;
   background-color: #0d140c;
   cursor: pointer;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  user-select: none;
+  &:hover {
+    background-color: #1e351b;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+form::before {
+  content: '';
+  position: fixed;
+  left: -10rem;
+  z-index: 9999;
+  top: -10rem;
+  width: calc(100% + 20rem);
+  height: calc(100% + 20rem);
+  background-image: url(noise.png);
+  opacity: 1;
+  pointer-events: none;
+  animation: noise 1s steps(2) infinite;
+}
+
+@-webkit-keyframes noise {
+  to {
+    transform: translate3d(-7rem, 0, 0);
+  }
+}
+
+@keyframes noise {
+  0% {
+    transform: translate3d(0, 9rem, 0);
+  }
+
+  10% {
+    transform: translate3d(-1rem, -4rem, 0);
+  }
+
+  20% {
+    transform: translate3d(-8rem, 2rem, 0);
+  }
+
+  30% {
+    transform: translate3d(9rem, -9rem, 0);
+  }
+
+  40% {
+    transform: translate3d(-2rem, 7rem, 0);
+  }
+
+  50% {
+    transform: translate3d(-9rem, -4rem, 0);
+  }
+
+  60% {
+    transform: translate3d(2rem, 6rem, 0);
+  }
+
+  70% {
+    transform: translate3d(7rem, -8rem, 0);
+  }
+
+  80% {
+    transform: translate3d(-9rem, 1rem, 0);
+  }
+
+  90% {
+    transform: translate3d(6rem, -5rem, 0);
+  }
+
+  to {
+    transform: translate3d(-7rem, 0, 0);
+  }
 }
 </style>
