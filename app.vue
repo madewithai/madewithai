@@ -5,51 +5,53 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; text-shadow: 0px 0px 10px rgb(150 243 135 / 40%)">
-    <form>
-      <div class="content">
-        <span class="title">
-          <span style="margin-right: 0.75rem">>_</span>
-          <span>MADE WITH AI</span>
-        </span>
-        <span class="desc">Join the community of developers who are building the future of the AI.</span>
-      </div>
-      <div class="join">
-        <img v-if="avatar" :src="avatar.avatar_url" class="avatar" />
-        <div v-else-if="pending" class="avatar">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-            <g>
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".14" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".29" transform="rotate(30 12 12)" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".43" transform="rotate(60 12 12)" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".57" transform="rotate(90 12 12)" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".71" transform="rotate(120 12 12)" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".86" transform="rotate(150 12 12)" />
-              <rect width="2" height="5" x="11" y="1" fill="currentColor" transform="rotate(180 12 12)" />
-              <animateTransform
-                attributeName="transform"
-                calcMode="discrete"
-                dur="0.75s"
-                repeatCount="indefinite"
-                type="rotate"
-                values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12" />
-            </g>
-          </svg>
+  <div class="container">
+    <div class="card">
+      <div class="form">
+        <div class="content">
+          <span class="title">
+            <span>>_</span>
+            <span>MADE WITH AI</span>
+          </span>
+          <span class="desc">Join the community of developers who are building the future of the AI.</span>
         </div>
-        <div v-else-if="!username" class="avatar none"></div>
-        <input v-model="username" type="text" placeholder="Type your Github username" />
-        <div class="submit">
-          <span style="line-height: 14px; display: flex; height: 12px">join us</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M4 11v2h12v2h2v-2h2v-2h-2V9h-2v2zm10-4h2v2h-2zm0 0h-2V5h2zm0 10h2v-2h-2zm0 0h-2v2h2z" />
-          </svg>
+        <div class="join">
+          <img v-if="avatar" :src="avatar.avatar_url" class="avatar" />
+          <div v-else-if="pending" class="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+              <g>
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".14" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".29" transform="rotate(30 12 12)" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".43" transform="rotate(60 12 12)" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".57" transform="rotate(90 12 12)" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".71" transform="rotate(120 12 12)" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".86" transform="rotate(150 12 12)" />
+                <rect width="2" height="5" x="11" y="1" fill="currentColor" transform="rotate(180 12 12)" />
+                <animateTransform
+                  attributeName="transform"
+                  calcMode="discrete"
+                  dur="0.75s"
+                  repeatCount="indefinite"
+                  type="rotate"
+                  values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12" />
+              </g>
+            </svg>
+          </div>
+          <div v-else-if="!username" class="avatar none"></div>
+          <input v-model="username" type="text" placeholder="Type your Github username" />
+          <div class="submit">
+            <span class="submit-text">join us</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M4 11v2h12v2h2v-2h2v-2h-2V9h-2v2zm10-4h2v2h-2zm0 0h-2V5h2zm0 10h2v-2h-2zm0 0h-2v2h2z" />
+            </svg>
+          </div>
         </div>
       </div>
-    </form>
-    <div style="display: flex; gap: 4px; border: 1px solid; padding: 0px 9px; border-radius: 32px">
-      <NuxtLink :to="member.html_url" target="_blank" rel="noopener" v-for="member of members" style="">
-        <img :src="member.avatar_url" class="avatar" style="margin-right: -0.5rem; margin-left: -0.5rem; border: 2px solid #000" />
-      </NuxtLink>
+      <div class="members">
+        <NuxtLink :to="member.html_url" target="_blank" rel="noopener" v-for="member of members">
+          <img :src="member.avatar_url" class="member-avatar" />
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
@@ -75,6 +77,17 @@ body {
   background: #010101;
   flex-direction: column;
   color: $color;
+  margin: 0;
+  &::before {
+    content: '';
+    position: fixed;
+    width: calc(100% + 20rem);
+    height: calc(100% + 20rem);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewbox='0 0 255 255'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='franctalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100vh' filter='url(%23noiseFilter)'%3E%3C/rect%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    animation: noise 1s steps(2) infinite;
+  }
 }
 
 *::selection {
@@ -82,7 +95,29 @@ body {
   box-sizing: border-box;
 }
 
-form {
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-shadow: 0px 0px 10px rgb(150 243 135 / 40%);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 99;
+  padding: 4rem;
+  border-radius: 3rem;
+  backdrop-filter: blur(6px);
+  background-color: rgb(0 0 0 / 30%);
+  box-shadow: 0px 10px 86px #0d0d0d;
+  border: 2px solid #95f386;
+}
+
+.form {
   display: flex;
   flex-direction: column;
   max-width: 33rem;
@@ -96,6 +131,10 @@ form {
 
 .title {
   margin-bottom: 1rem;
+  gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .desc {
   font-size: 0.7rem;
@@ -140,6 +179,7 @@ input {
   }
   &::placeholder {
     padding: 23px 0px;
+    text-shadow: 0px 0px 0px;
   }
 }
 .submit {
@@ -164,17 +204,33 @@ input {
   }
 }
 
-form::before {
-  content: '';
-  position: fixed;
-  left: -10rem;
-  top: -10rem;
-  width: calc(100% + 20rem);
-  height: calc(100% + 20rem);
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewbox='0 0 255 255'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='franctalNoise' baseFrequency='1.2'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100vh' filter='url(%23noiseFilter)'%3E%3C/rect%3E%3C/svg%3E");
-  opacity: 0.35;
-  pointer-events: none;
-  animation: noise 1s steps(2) infinite;
+.submit-text {
+  line-height: 14px;
+  display: flex;
+  height: 12px;
+}
+
+.members {
+  display: flex;
+  border: 2px solid #95f386;
+  padding: 0px 4px;
+  border-radius: 99px;
+  position: absolute;
+  bottom: -20px;
+  z-index: 100;
+  background: black;
+}
+
+.member-avatar {
+  margin-right: -0.25rem;
+  margin-left: -0.25rem;
+  border: 2px solid #000;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  border-radius: 99px;
 }
 
 @-webkit-keyframes noise {
