@@ -47,8 +47,27 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
           </div>
         </div>
       </div>
-      <div class="members">{{ members.length }} PUBLIC MEMBER</div>
+      <div class="members">{{ members ? members.length : 941 }} PUBLIC MEMBER</div>
     </div>
+  </div>
+  <div style="position: absolute; height: 100vh; width: 100vw; left: 0; top: 0; align-items: center; display: flex; justify-content: center">
+    <svg width="1466" height="1466" viewBox="-1 -1 1466 1466" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 1149.26L1464 1149.26M0 1089.65L1464 1089.65M0 1030.05L1464 1030.05M0 970.437L1464 970.437M0 910.828L1464 910.827M0 851.218L1464 851.218M0 791.609L1464 791.609M0 732L1464 732M0 672.391L1464 672.391M0 612.782L1464 612.782M0 553.173L1464 553.173M0 493.564L1464 493.564M0 433.955L1464 433.954M0 374.345L1464 374.345M0 314.736L1464 314.736M1149.26 1464L1149.26 0M1089.65 1464L1089.65 2.6056e-06M1030.05 1464L1030.05 5.21119e-06M970.437 1464L970.436 7.81679e-06M910.828 1464L910.827 1.04224e-05M851.218 1464L851.218 1.3028e-05M791.609 1464L791.609 1.56336e-05M732 1464L732 1.82392e-05M672.391 1464L672.391 2.08448e-05M612.782 1464L612.782 2.34504e-05M553.173 1464L553.173 2.6056e-05M493.564 1464L493.563 2.86616e-05M433.955 1464L433.954 3.12672e-05M374.345 1464L374.345 3.38728e-05M314.736 1464L314.736 3.64784e-05"
+        stroke="url(#svg102455267_1249_paint0_radial_390_328)"></path>
+      <defs>
+        <radialGradient
+          id="svg102455267_1249_paint0_radial_390_328"
+          cx="0"
+          cy="0"
+          r="1"
+          gradientUnits="userSpaceOnUse"
+          gradientTransform="translate(732 732) rotate(90) scale(446)">
+          <stop stop-color="#042000"></stop>
+          <stop offset="1" stop-color="#020f00" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+    </svg>
   </div>
 </template>
 
@@ -72,6 +91,7 @@ body {
   flex-direction: column;
   color: $color;
   margin: 0;
+  overflow: hidden;
 }
 *::selection {
   background: #1a4f1a;
@@ -82,6 +102,8 @@ body {
   flex-direction: column;
   align-items: center;
   text-shadow: 0px 0px 10px rgb(150 243 135 / 40%);
+  z-index: 99;
+  position: relative;
 }
 .card {
   display: flex;
@@ -121,6 +143,8 @@ body {
   padding: 8px;
   border-radius: 99px;
   box-shadow: 0px 9px 30px -15px rgb(150 243 135 / 40%);
+  background: rgb(48 83 42 / 15%);
+  backdrop-filter: blur(3px);
 }
 .avatar {
   align-items: center;
@@ -129,6 +153,7 @@ body {
   height: 40px;
   width: 40px;
   border-radius: 99px;
+  box-shadow: 0px 3px 5px #000;
 }
 .none {
   background-color: $color;
@@ -150,7 +175,7 @@ input {
   }
   &::placeholder {
     padding: 23px 0px;
-    text-shadow: rgba(255, 255, 255, 0.4) 0px 0px 10px;
+    text-shadow: #000 0px 3px 5px;
     color: #999;
   }
 }
@@ -168,6 +193,7 @@ input {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
   user-select: none;
+  box-shadow: 0px 3px 5px #000;
   &:hover {
     background-color: #1e351b;
   }
