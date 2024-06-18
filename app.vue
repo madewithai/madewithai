@@ -72,13 +72,9 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
 </template>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
-
 * {
   font-family: 'Press Start 2P', cursive;
 }
-
-$color: #95f386;
 
 html,
 body {
@@ -89,7 +85,7 @@ body {
   align-items: center;
   background: #010101;
   flex-direction: column;
-  color: $color;
+  color: #95f386;
   margin: 0;
   overflow: hidden;
 }
@@ -139,7 +135,7 @@ body {
 .join {
   display: flex;
   font-size: x-small;
-  border: 1px solid $color;
+  border: 1px solid #95f386;
   padding: 8px;
   border-radius: 99px;
   box-shadow: 0px 9px 30px -15px rgb(150 243 135 / 40%);
@@ -156,14 +152,14 @@ body {
   box-shadow: 0px 3px 5px #000;
 }
 .none {
-  background-color: $color;
+  background-color: #95f386;
   color: #000;
   font-size: 8px;
 }
 input {
   background: transparent;
   border: 0px;
-  color: $color;
+  color: #95f386;
   padding: 0;
   font-size: x-small;
   flex: 1 1 0%;
