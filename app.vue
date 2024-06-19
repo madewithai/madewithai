@@ -110,8 +110,8 @@ watch(
         </div>
       </div>
       <div class="members">{{ members ? members.length : 941 }} PEOPLE JOINED</div>
-      <div v-if="isSending" class="message">
-        <div style="display: flex; padding: 5px">
+      <Transition name="fade">
+        <div v-if="isSending" class="alert-loading">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
             <g>
               <circle cx="12" cy="2.5" r="1.5" fill="currentColor" opacity=".14" />
@@ -131,10 +131,10 @@ watch(
             </g>
           </svg>
         </div>
-      </div>
-      <div v-if="alert" :class="['message', { error: sendError }]">
-        <div style="padding: 5px 10px 3px 10px">{{ alert }}</div>
-      </div>
+        <div v-else-if="alert" :class="['message', { error: sendError }]">
+          <div style="padding: 5px 10px 3px 10px">{{ alert }}</div>
+        </div>
+      </Transition>
     </div>
   </div>
   <div class="background">
@@ -159,6 +159,16 @@ watch(
 </template>
 
 <style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 * {
   font-family: 'Press Start 2P', cursive;
 }
@@ -322,6 +332,12 @@ input {
     color: #e90c32;
     text-shadow: 0px 0px 10px rgb(243 135 135 / 40%);
   }
+}
+
+.alert-loading {
+  position: absolute;
+  bottom: -5rem;
+  padding: 5px;
 }
 
 .error {
