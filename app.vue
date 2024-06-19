@@ -33,7 +33,7 @@ const sendInvite = async () => {
   });
 };
 
-const throttledFetch = useDebounceFn(fetch, 100);
+const throttledFetch = useDebounceFn(fetch, 200);
 
 watch(
   () => username.value,
@@ -81,7 +81,7 @@ watch(
             </svg>
           </div>
           <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
-          <input v-model="username" type="text" placeholder="Type your Github username" />
+          <input v-model="username" type="text" placeholder="Type your Github username" @keyup.enter="fetch" />
           <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
