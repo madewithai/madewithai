@@ -32,6 +32,7 @@ const sendInvite = async () => {
   if (!userData.value || !username.value) return;
   isSending.value = true;
   sendError.value = false;
+  alert.value = '';
   await octokit.orgs
     .createInvitation({
       org: config.public.org,
@@ -48,9 +49,6 @@ const sendInvite = async () => {
     })
     .finally(() => {
       isSending.value = false;
-      setTimeout(() => {
-        alert.value = '';
-      }, 5000);
     });
 };
 
@@ -112,8 +110,8 @@ watch(
         </div>
       </div>
       <div class="members">{{ members ? members.length : 941 }} PEOPLE JOINED</div>
-      <div v-if="isSending || alert" :class="['message', { error: sendError }]">
-        <div v-if="isSending" style="display: flex; padding: 5px">
+      <div v-if="isSending" class="message">
+        <div style="display: flex; padding: 5px">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
             <g>
               <circle cx="12" cy="2.5" r="1.5" fill="currentColor" opacity=".14" />
@@ -133,7 +131,9 @@ watch(
             </g>
           </svg>
         </div>
-        <div v-else-if="alert" style="padding: 5px 10px 3px 10px">{{ alert }}</div>
+      </div>
+      <div v-if="alert" :class="['message', { error: sendError }]">
+        <div style="padding: 5px 10px 3px 10px">{{ alert }}</div>
       </div>
     </div>
   </div>
