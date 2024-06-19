@@ -33,14 +33,16 @@ const sendInvite = async () => {
   });
 };
 
-const throttledFetch = useDebounceFn(fetch, 200);
+const throttledFetch = useDebounceFn(fetch, 100);
 
 watch(
   () => username.value,
-  () => {
+  newUsername => {
     error.value = false;
-    isLoading.value = true;
-    throttledFetch();
+    if (newUsername) {
+      isLoading.value = true;
+      throttledFetch();
+    }
   }
 );
 </script>
@@ -179,6 +181,9 @@ body {
   box-shadow: 0px 9px 30px -15px rgb(150 243 135 / 40%);
   background: rgb(48 83 42 / 15%);
   backdrop-filter: blur(3px);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
 }
 .avatar {
   align-items: center;
@@ -193,6 +198,9 @@ body {
   background-color: #95f386;
   color: #000;
   font-size: 8px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
 }
 input {
   background: transparent;
@@ -253,6 +261,14 @@ input {
 }
 
 .error {
+  .submit {
+    background-color: #140c0c;
+    color: #e90c32;
+    text-shadow: rgb(243 135 135 / 40%) 0px 0px 10px;
+    &:hover {
+      background-color: #351b1b;
+    }
+  }
   .join {
     border: 1px solid #e90c31;
     box-shadow: 0px 9px 30px -15px rgb(243 135 135 / 40%);
