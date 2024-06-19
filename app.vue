@@ -6,19 +6,22 @@ const octokit = new Octokit({ auth: config.public.ghToken });
 const username = ref('');
 const userData = ref<UserData | null>(null);
 const isLoading = ref(false);
-const error = ref(false);
+const fetchError = ref(false);
+const sendError = ref(false);
+const isSending = ref(false);
+const alert = ref('');
 
 const { data: members } = await octokit.orgs.listMembers({ org: config.public.org });
 
 const fetch = async () => {
-  octokit.users
+  await octokit.users
     .getByUsername({ username: username.value })
     .then(({ data }) => {
       userData.value = data;
     })
     .catch(() => {
       userData.value = null;
-      error.value = true;
+      fetchError.value = true;
     })
     .finally(() => {
       isLoading.value = false;
@@ -27,10 +30,28 @@ const fetch = async () => {
 
 const sendInvite = async () => {
   if (!userData.value || !username.value) return;
-  await octokit.orgs.createInvitation({
-    org: config.public.org,
-    invitee_id: userData.value.id,
-  });
+  isSending.value = true;
+  sendError.value = false;
+  await octokit.orgs
+    .createInvitation({
+      org: config.public.org,
+      invitee_id: userData.value.id,
+    })
+    .then(({ data }) => {
+      console.log(data);
+      alert.value = 'Invite sent! Check your email.';
+    })
+    .catch(error => {
+      console.log(error);
+      sendError.value = true;
+      alert.value = 'Invitation could not be sent.';
+    })
+    .finally(() => {
+      isSending.value = false;
+      setTimeout(() => {
+        alert.value = '';
+      }, 5000);
+    });
 };
 
 const throttledFetch = useDebounceFn(fetch, 200);
@@ -38,7 +59,7 @@ const throttledFetch = useDebounceFn(fetch, 200);
 watch(
   () => username.value,
   newUsername => {
-    error.value = false;
+    fetchError.value = false;
     if (newUsername) {
       isLoading.value = true;
       throttledFetch();
@@ -49,7 +70,7 @@ watch(
 
 <template>
   <div class="container">
-    <div :class="['card', { error: error }]">
+    <div :class="['card', { error: fetchError }]">
       <div class="form">
         <div class="content">
           <span class="title">
@@ -59,7 +80,7 @@ watch(
           <span class="desc">Join the community of developers who are building the future of the AI.</span>
         </div>
         <div class="join">
-          <div v-if="!username || error" class="avatar none"></div>
+          <div v-if="!username || fetchError" class="avatar none"></div>
           <div v-else-if="isLoading" class="avatar">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
               <g>
@@ -81,7 +102,7 @@ watch(
             </svg>
           </div>
           <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
-          <input v-model="username" type="text" placeholder="Type your Github username" @keyup.enter="fetch" />
+          <input v-model="username" type="text" placeholder="Type your Github username" @keyup.enter="sendInvite" />
           <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
@@ -91,6 +112,29 @@ watch(
         </div>
       </div>
       <div class="members">{{ members ? members.length : 941 }} PEOPLE JOINED</div>
+      <div v-if="isSending || alert" :class="['message', { error: sendError }]">
+        <div v-if="isSending" style="display: flex; padding: 5px">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+            <g>
+              <circle cx="12" cy="2.5" r="1.5" fill="currentColor" opacity=".14" />
+              <circle cx="16.75" cy="3.77" r="1.5" fill="currentColor" opacity=".29" />
+              <circle cx="20.23" cy="7.25" r="1.5" fill="currentColor" opacity=".43" />
+              <circle cx="21.5" cy="12" r="1.5" fill="currentColor" opacity=".57" />
+              <circle cx="20.23" cy="16.75" r="1.5" fill="currentColor" opacity=".71" />
+              <circle cx="16.75" cy="20.23" r="1.5" fill="currentColor" opacity=".86" />
+              <circle cx="12" cy="21.5" r="1.5" fill="currentColor" />
+              <animateTransform
+                attributeName="transform"
+                calcMode="discrete"
+                dur="0.75s"
+                repeatCount="indefinite"
+                type="rotate"
+                values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12" />
+            </g>
+          </svg>
+        </div>
+        <div v-else-if="alert" style="padding: 5px 10px 3px 10px">{{ alert }}</div>
+      </div>
     </div>
   </div>
   <div class="background">
@@ -106,8 +150,8 @@ watch(
           r="1"
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(732 732) rotate(90) scale(446)">
-          <stop :stop-color="error ? '#320000' : '#042000'"></stop>
-          <stop offset="1" :stop-color="error ? '#0f0000' : '#020f00'" stop-opacity="0"></stop>
+          <stop :stop-color="fetchError ? '#320000' : '#042000'"></stop>
+          <stop offset="1" :stop-color="fetchError ? '#0f0000' : '#020f00'" stop-opacity="0"></stop>
         </radialGradient>
       </defs>
     </svg>
@@ -258,6 +302,26 @@ input {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.message {
+  max-width: 30rem;
+  font-size: 9px;
+  text-align: center;
+  line-height: 20px;
+  position: absolute;
+  bottom: -5rem;
+  border: 1px solid;
+  border-radius: 99px;
+  background-color: rgb(2 82 7 / 30%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.error {
+    border: 1px solid #e90c32;
+    background-color: rgb(82 2 16 / 30%);
+    color: #e90c32;
+    text-shadow: 0px 0px 10px rgb(243 135 135 / 40%);
+  }
 }
 
 .error {
