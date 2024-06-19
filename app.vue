@@ -1,12 +1,53 @@
 <script setup lang="ts">
+const config = useRuntimeConfig();
+import { Octokit } from '@octokit/rest';
+const octokit = new Octokit({ auth: config.public.ghToken });
+
 const username = ref('');
-const { data: avatar, pending } = await useFetch(() => `https://api.github.com/users/${username.value}`);
-const { data: members } = await useFetch('https://api.github.com/orgs/madewithai/members');
+const userData = ref<UserData | null>(null);
+const isLoading = ref(false);
+const error = ref(false);
+
+const { data: members } = await octokit.orgs.listMembers({ org: config.public.org });
+
+const fetch = async () => {
+  octokit.users
+    .getByUsername({ username: username.value })
+    .then(({ data }) => {
+      userData.value = data;
+    })
+    .catch(() => {
+      userData.value = null;
+      error.value = true;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+};
+
+const sendInvite = async () => {
+  if (!userData.value || !username.value) return;
+  await octokit.orgs.createInvitation({
+    org: config.public.org,
+    invitee_id: userData.value.id,
+  });
+};
+
+const throttledFetch = useDebounceFn(fetch, 200);
+
+watch(
+  () => username.value,
+  () => {
+    error.value = false;
+    isLoading.value = true;
+    throttledFetch();
+  }
+);
 </script>
 
 <template>
   <div class="container">
-    <div class="card">
+    <div :class="['card', { error: error }]">
       <div class="form">
         <div class="content">
           <span class="title">
@@ -16,8 +57,8 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
           <span class="desc">Join the community of developers who are building the future of the AI.</span>
         </div>
         <div class="join">
-          <img v-if="avatar" :src="avatar.avatar_url" class="avatar" />
-          <div v-else-if="pending" class="avatar">
+          <div v-if="!username || error" class="avatar none"></div>
+          <div v-else-if="isLoading" class="avatar">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
               <g>
                 <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".14" />
@@ -37,9 +78,9 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
               </g>
             </svg>
           </div>
-          <div v-else-if="!username" class="avatar none"></div>
+          <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
           <input v-model="username" type="text" placeholder="Type your Github username" />
-          <div class="submit">
+          <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
               <path fill="currentColor" d="M4 11v2h12v2h2v-2h2v-2h-2V9h-2v2zm10-4h2v2h-2zm0 0h-2V5h2zm0 10h2v-2h-2zm0 0h-2v2h2z" />
@@ -47,7 +88,7 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
           </div>
         </div>
       </div>
-      <div class="members">{{ members ? members.length : 941 }} PUBLIC MEMBER</div>
+      <div class="members">{{ members ? members.length : 941 }} PEOPLE JOINED</div>
     </div>
   </div>
   <div class="background">
@@ -63,8 +104,8 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
           r="1"
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(732 732) rotate(90) scale(446)">
-          <stop stop-color="#042000"></stop>
-          <stop offset="1" stop-color="#020f00" stop-opacity="0"></stop>
+          <stop :stop-color="error ? '#320000' : '#042000'"></stop>
+          <stop offset="1" :stop-color="error ? '#0f0000' : '#020f00'" stop-opacity="0"></stop>
         </radialGradient>
       </defs>
     </svg>
@@ -75,7 +116,6 @@ const { data: members } = await useFetch('https://api.github.com/orgs/madewithai
 * {
   font-family: 'Press Start 2P', cursive;
 }
-
 html,
 body {
   width: 100%;
@@ -119,7 +159,6 @@ body {
   text-align: center;
   padding: 0 1rem;
 }
-
 .title {
   margin-bottom: 1rem;
   gap: 0.75rem;
@@ -131,7 +170,6 @@ body {
   font-size: 0.7rem;
   line-height: 19px;
 }
-
 .join {
   display: flex;
   font-size: x-small;
@@ -197,23 +235,58 @@ input {
     transform: scale(0.95);
   }
 }
-
 .submit-text {
   line-height: 14px;
   display: flex;
   height: 12px;
 }
-
 .members {
   font-size: 10px;
   line-height: 18px;
 }
-
 .background {
   display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.error {
+  .join {
+    border: 1px solid #e90c31;
+    box-shadow: 0px 9px 30px -15px rgb(243 135 135 / 40%);
+    background: rgb(83 42 42 / 15%);
+    animation: shake 0.2s ease-in-out 0s 2;
+  }
+  .none {
+    background-color: #e90c31;
+  }
+  input {
+    color: #e90c31;
+    text-shadow: rgb(243 135 135 / 40%) 0px 0px 10px;
+    &::selection {
+      background: #4f1a1a;
+    }
+  }
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+    margin-right: -0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+    margin-right: 0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
 }
 </style>
