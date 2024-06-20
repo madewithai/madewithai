@@ -73,8 +73,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content:
-        'Welcome to Made With AI, a collaborative hub for showcasing and developing tools and solutions powered by artificial intelligence. This organization is dedicated to fostering innovation and sharing AI-driven projects with a global community. ✨',
+      content: 'AI-powered tools and solutions for everyone. Join us for unrestricted access. ✨',
     },
     { property: 'og:image', content: '/social-card.png' },
   ],
