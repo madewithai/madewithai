@@ -52,7 +52,7 @@ const sendInvite = async () => {
     });
 };
 
-const throttledFetch = useDebounceFn(fetch, 200);
+const throttledFetch = useDebounceFn(fetch, 20);
 
 watch(
   () => username.value,
@@ -70,66 +70,24 @@ watch(
   <div class="container">
     <div :class="['card', { error: fetchError }]">
       <div class="form">
-        <div class="content">
-          <span class="title">
-            <span>>_</span>
-            <span>MADE WITH AI</span>
-          </span>
-          <span class="desc">Join the community of developers who are building the future of the AI.</span>
-        </div>
+        <FormTitle />
         <div class="join">
           <div v-if="!username || fetchError" class="avatar none"></div>
           <div v-else-if="isLoading" class="avatar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-              <g>
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".14" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".29" transform="rotate(30 12 12)" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".43" transform="rotate(60 12 12)" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".57" transform="rotate(90 12 12)" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".71" transform="rotate(120 12 12)" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" opacity=".86" transform="rotate(150 12 12)" />
-                <rect width="2" height="5" x="11" y="1" fill="currentColor" transform="rotate(180 12 12)" />
-                <animateTransform
-                  attributeName="transform"
-                  calcMode="discrete"
-                  dur="0.75s"
-                  repeatCount="indefinite"
-                  type="rotate"
-                  values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12" />
-              </g>
-            </svg>
+            <Icon name="svg-spinners:bars-rotate-fade" size="32" />
           </div>
           <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
           <input v-model="username" type="text" placeholder="Type your Github username" @keyup.enter="sendInvite" />
           <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M4 11v2h12v2h2v-2h2v-2h-2V9h-2v2zm10-4h2v2h-2zm0 0h-2V5h2zm0 10h2v-2h-2zm0 0h-2v2h2z" />
-            </svg>
+            <Icon name="pixelarticons:arrow-right" size="18" />
           </div>
         </div>
       </div>
       <div class="members">{{ members ? members.length : 941 }} PEOPLE JOINED</div>
       <Transition name="fade">
         <div v-if="isSending" class="alert-loading">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-            <g>
-              <circle cx="12" cy="2.5" r="1.5" fill="currentColor" opacity=".14" />
-              <circle cx="16.75" cy="3.77" r="1.5" fill="currentColor" opacity=".29" />
-              <circle cx="20.23" cy="7.25" r="1.5" fill="currentColor" opacity=".43" />
-              <circle cx="21.5" cy="12" r="1.5" fill="currentColor" opacity=".57" />
-              <circle cx="20.23" cy="16.75" r="1.5" fill="currentColor" opacity=".71" />
-              <circle cx="16.75" cy="20.23" r="1.5" fill="currentColor" opacity=".86" />
-              <circle cx="12" cy="21.5" r="1.5" fill="currentColor" />
-              <animateTransform
-                attributeName="transform"
-                calcMode="discrete"
-                dur="0.75s"
-                repeatCount="indefinite"
-                type="rotate"
-                values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12" />
-            </g>
-          </svg>
+          <Icon name="svg-spinners:6-dots-rotate" size="18" />
         </div>
         <div v-else-if="alert" :class="['message', { error: sendError }]">
           <div style="padding: 5px 10px 3px 10px">{{ alert }}</div>
@@ -138,23 +96,7 @@ watch(
     </div>
   </div>
   <div class="background">
-    <svg width="1466" height="1466" viewBox="-1 -1 1466 1466" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M0 1149.26L1464 1149.26M0 1089.65L1464 1089.65M0 1030.05L1464 1030.05M0 970.437L1464 970.437M0 910.828L1464 910.827M0 851.218L1464 851.218M0 791.609L1464 791.609M0 732L1464 732M0 672.391L1464 672.391M0 612.782L1464 612.782M0 553.173L1464 553.173M0 493.564L1464 493.564M0 433.955L1464 433.954M0 374.345L1464 374.345M0 314.736L1464 314.736M1149.26 1464L1149.26 0M1089.65 1464L1089.65 2.6056e-06M1030.05 1464L1030.05 5.21119e-06M970.437 1464L970.436 7.81679e-06M910.828 1464L910.827 1.04224e-05M851.218 1464L851.218 1.3028e-05M791.609 1464L791.609 1.56336e-05M732 1464L732 1.82392e-05M672.391 1464L672.391 2.08448e-05M612.782 1464L612.782 2.34504e-05M553.173 1464L553.173 2.6056e-05M493.564 1464L493.563 2.86616e-05M433.955 1464L433.954 3.12672e-05M374.345 1464L374.345 3.38728e-05M314.736 1464L314.736 3.64784e-05"
-        stroke="url(#svg102455267_1249_paint0_radial_390_328)"></path>
-      <defs>
-        <radialGradient
-          id="svg102455267_1249_paint0_radial_390_328"
-          cx="0"
-          cy="0"
-          r="1"
-          gradientUnits="userSpaceOnUse"
-          gradientTransform="translate(732 732) rotate(90) scale(446)">
-          <stop :stop-color="fetchError ? '#320000' : '#042000'"></stop>
-          <stop offset="1" :stop-color="fetchError ? '#0f0000' : '#020f00'" stop-opacity="0"></stop>
-        </radialGradient>
-      </defs>
-    </svg>
+    <BackgroundSvg :fetchError="fetchError" />
   </div>
 </template>
 
