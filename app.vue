@@ -64,6 +64,21 @@ watch(
     }
   }
 );
+
+useHead({
+  htmlAttrs: {
+    lang: 'en',
+  },
+  title: 'Made With AI',
+  meta: [
+    {
+      name: 'description',
+      content:
+        'Welcome to Made With AI, a collaborative hub for showcasing and developing tools and solutions powered by artificial intelligence. This organization is dedicated to fostering innovation and sharing AI-driven projects with a global community. ✨',
+    },
+    { property: 'og:image', content: '/social-card.png' },
+  ],
+});
 </script>
 
 <template>
