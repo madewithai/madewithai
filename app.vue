@@ -9,6 +9,7 @@ const isLoading = ref(false);
 const fetchError = ref(false);
 const sendError = ref(false);
 const isSending = ref(false);
+const isInputFocused = ref(false);
 const alert = ref('');
 
 const { data: members } = await octokit.orgs.listMembers({ org: config.public.org });
@@ -85,13 +86,13 @@ useHead({
     <div :class="['card', { error: fetchError }]">
       <div class="form">
         <FormTitle />
-        <div class="join">
+        <div :class="['join', { 'input-focused': isInputFocused }]">
           <div v-if="!username || fetchError" class="avatar none"></div>
           <div v-else-if="isLoading" class="avatar">
             <Icon name="svg-spinners:bars-rotate-fade" size="32" />
           </div>
           <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
-          <input v-model="username" type="text" placeholder="Type your Github username" @keyup.enter="sendInvite" />
+          <input v-model="username" type="text" placeholder="Type your Github username" @focus="isInputFocused = true" @blur="isInputFocused = false" @keyup.enter="sendInvite" />
           <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>
             <Icon name="pixelarticons:arrow-right" size="18" />
@@ -182,6 +183,25 @@ body {
   font-size: 0.7rem;
   line-height: 19px;
 }
+.input-focused {
+  &.join {
+    border: 1px solid #81ff6c;
+    box-shadow: 0px 9px 30px -15px rgb(150 243 135 / 50%);
+    background: rgb(48 83 42 / 20%);
+  }
+  .none {
+    background-color: #81ff6c;
+  }
+  .submit {
+    border: 1px solid #81ff6c;
+    color: #81ff6c;
+  }
+  input {
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+}
 .join {
   display: flex;
   font-size: x-small;
@@ -229,6 +249,9 @@ input {
     padding: 23px 0px;
     text-shadow: #000 0px 3px 5px;
     color: #999;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
   }
 }
 .submit {
