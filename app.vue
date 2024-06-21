@@ -244,6 +244,7 @@ input {
   text-shadow: rgba(150, 243, 135, 0.4) 0px 0px 10px;
   &:focus {
     outline: none;
+    color: #81ff6c;
   }
   &::placeholder {
     padding: 23px 0px;
@@ -324,6 +325,7 @@ input {
     background-color: #140c0c;
     color: #e90c32;
     text-shadow: rgb(243 135 135 / 40%) 0px 0px 10px;
+    border: 1px solid;
     &:hover {
       background-color: #351b1b;
     }
