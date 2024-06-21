@@ -39,14 +39,12 @@ const sendInvite = async () => {
       org: config.public.org,
       invitee_id: userData.value.id,
     })
-    .then(({ data }) => {
-      console.log(data);
+    .then(() => {
       alert.value = 'Invite sent! Check your email.';
     })
     .catch(error => {
-      console.log(error);
       sendError.value = true;
-      alert.value = 'Invitation could not be sent.';
+      alert.value = error.response.data.errors[0].message;
     })
     .finally(() => {
       isSending.value = false;
