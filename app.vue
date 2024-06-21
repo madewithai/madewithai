@@ -236,11 +236,10 @@ input {
   background: transparent;
   border: 0px;
   color: #95f386;
-  padding: 0;
   font-size: x-small;
   flex: 1 1 0%;
   padding: 0px 8px;
-  line-height: 23px;
+  line-height: 40px;
   text-shadow: rgba(150, 243, 135, 0.4) 0px 0px 10px;
   &:focus {
     outline: none;
