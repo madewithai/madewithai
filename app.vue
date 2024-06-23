@@ -287,6 +287,9 @@ input {
     background-color: rgb(82 2 16 / 30%);
     color: #e90c32;
     text-shadow: 0px 0px 10px rgb(243 135 135 / 40%);
+    ::selection {
+      background: #4f1a1a;
+    }
   }
 }
 
