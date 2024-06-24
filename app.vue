@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
 import { Octokit } from '@octokit/rest';
-const octokit = new Octokit({ auth: config.public.ghToken });
+const octokit = new Octokit({ auth: config.public.githubToken });
 
 const username = ref('');
 const userData = ref<UserData | null>(null);
@@ -12,7 +12,7 @@ const isSending = ref(false);
 const isInputFocused = ref(false);
 const alert = ref('');
 
-const { data: members } = await octokit.orgs.listMembers({ org: config.public.org });
+const { data: members } = await useFetch('/api/listMembers');
 
 const fetch = async () => {
   await octokit.users
@@ -36,7 +36,7 @@ const sendInvite = async () => {
   alert.value = '';
   await octokit.orgs
     .createInvitation({
-      org: config.public.org,
+      org: config.public.githubOrg,
       invitee_id: userData.value.id,
     })
     .then(() => {
