@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  modules: ['@nuxtjs/google-fonts', '@vueuse/nuxt', "@nuxt/icon"],
+  modules: ['@nuxtjs/google-fonts', '@vueuse/nuxt', '@nuxt/icon'],
   googleFonts: {
     families: {
       'Press+Start+2P': true,
@@ -9,8 +9,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      ghToken: process.env.GITHUB_TOKEN,
-      org: process.env.ORGANIZATION,
+      githubToken: process.env.GITHUB_TOKEN,
+      githubOrg: process.env.ORGANIZATION,
     },
   },
 });
