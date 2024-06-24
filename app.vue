@@ -37,17 +37,17 @@ const sendInvite = async () => {
   isSending.value = true;
   sendError.value = false;
   alert.value = '';
-  await octokit.orgs
-    .createInvitation({
-      org: config.public.githubOrg,
-      invitee_id: userData.value.id,
-    })
-    .then(() => {
-      alert.value = 'Invite sent! Check your email.';
-    })
-    .catch(error => {
-      sendError.value = true;
-      alert.value = error.response.data.errors[0].message;
+  await $fetch<InviteResponse>('/api/createInvitation', {
+    method: 'POST',
+    body: { invitee_id: userData.value.id },
+  })
+    .then(res => {
+      if (res.error) {
+        sendError.value = true;
+        alert.value = res.error;
+      } else {
+        alert.value = 'Invite sent! Check your email.';
+      }
     })
     .finally(() => {
       isSending.value = false;

@@ -38,3 +38,8 @@ interface UserResponse {
   data?: UserData;
   error?: any;
 }
+
+interface InviteResponse {
+  error?: string;
+  message?: string;
+}
