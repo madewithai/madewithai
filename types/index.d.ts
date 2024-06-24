@@ -33,3 +33,8 @@ interface UserData {
   updated_at: string;
   ldap_dn?: string;
 }
+
+interface UserResponse {
+  data?: UserData;
+  error?: any;
+}
