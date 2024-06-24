@@ -15,14 +15,17 @@ const alert = ref('');
 const { data: members } = await useFetch('/api/listMembers');
 
 const fetch = async () => {
-  await octokit.users
-    .getByUsername({ username: username.value })
-    .then(({ data }) => {
-      userData.value = data;
-    })
-    .catch(() => {
-      userData.value = null;
-      fetchError.value = true;
+  await $fetch<UserResponse>('/api/getByUsername', {
+    method: 'POST',
+    body: { username: username.value },
+  })
+    .then(res => {
+      if (res.error) {
+        userData.value = null;
+        fetchError.value = true;
+      } else {
+        userData.value = res.data || null;
+      }
     })
     .finally(() => {
       isLoading.value = false;
@@ -51,7 +54,7 @@ const sendInvite = async () => {
     });
 };
 
-const throttledFetch = useDebounceFn(fetch, 20);
+const throttledFetch = useDebounceFn(fetch, 200);
 
 watch(
   () => username.value,

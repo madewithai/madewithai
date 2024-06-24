@@ -6,11 +6,14 @@ export default defineEventHandler(async event => {
     auth: config.public.githubToken,
   });
 
-  return octokit.orgs
-    .listMembers({
-      org: config.public.githubOrg,
+  const body = await readBody(event);
+
+  return octokit.users
+    .getByUsername({ username: body.username })
+    .then(({ data }) => {
+      return { data };
     })
-    .then(response => {
-      return response.data;
+    .catch(error => {
+      return { error };
     });
 });
