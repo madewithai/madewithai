@@ -1,10 +1,6 @@
 <script setup lang="ts">
-const config = useRuntimeConfig();
-import { Octokit } from '@octokit/rest';
-const octokit = new Octokit({ auth: config.public.githubToken });
-
 const username = ref('');
-const userData = ref<UserData | null>(null);
+const userData = ref<UserResponse | null>(null);
 const isLoading = ref(false);
 const fetchError = ref(false);
 const sendError = ref(false);
@@ -24,7 +20,7 @@ const fetch = async () => {
         userData.value = null;
         fetchError.value = true;
       } else {
-        userData.value = res.data || null;
+        userData.value = res;
       }
     })
     .finally(() => {
@@ -88,7 +84,7 @@ useHead({
       <div class="form">
         <FormTitle />
         <div :class="['join', { 'input-focused': isInputFocused }]">
-          <UserAvatar :username="username" :fetchError="fetchError" :isLoading="isLoading" :userData="userData" />
+          <UserAvatar :username="username" :fetchError="fetchError" :isLoading="isLoading" :avatar="userData?.avatar" />
           <input v-model="username" type="text" placeholder="Type your Github username" @focus="isInputFocused = true" @blur="isInputFocused = false" @keyup.enter="sendInvite" />
           <div class="submit" @click="sendInvite">
             <span class="submit-text">join us</span>

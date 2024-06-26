@@ -1,13 +1,9 @@
 <script setup lang="ts">
-interface UserData {
-  avatar_url: string;
-}
-
 defineProps<{
   username?: string;
   fetchError: boolean;
   isLoading: boolean;
-  userData?: UserData | null;
+  avatar?: string;
 }>();
 </script>
 
@@ -16,7 +12,7 @@ defineProps<{
   <div v-else-if="isLoading" class="avatar">
     <Icon name="svg-spinners:bars-rotate-fade" size="32" />
   </div>
-  <img v-else-if="userData" :src="userData.avatar_url" class="avatar" />
+  <img v-else-if="avatar" :src="avatar" class="avatar" />
 </template>
 
 <style lang="scss">

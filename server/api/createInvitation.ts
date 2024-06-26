@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
   return octokit.orgs
     .createInvitation({ org: config.public.githubOrg, invitee_id: body.invitee_id })
     .then(({ data }) => {
-      return { data };
+      return { data: data.created_at };
     })
     .catch(error => {
       return { error: error.response.data.errors[0].message };
