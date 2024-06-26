@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
   return octokit.users
     .getByUsername({ username: body.username })
     .then(({ data }) => {
-      return { data };
+      return { avatar: data.avatar_url, id: data.id };
     })
     .catch(error => {
       return { error };
