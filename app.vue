@@ -73,7 +73,7 @@ useHead({
       name: 'description',
       content: 'AI-powered tools and solutions for everyone. Join us for unrestricted access. ✨',
     },
-    { property: 'og:image', content: 'https://madewithai.netlify.app/social-card.png' },
+    { property: 'og:image', content: 'https://madewithai.netlify.app/social-card.jpg' },
   ],
 });
 </script>
