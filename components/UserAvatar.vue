@@ -12,7 +12,9 @@ defineProps<{
   <div v-else-if="isLoading" class="avatar">
     <Icon name="svg-spinners:bars-rotate-fade" size="32" />
   </div>
-  <img v-else-if="avatar" :src="avatar" class="avatar" />
+  <NuxtLink v-else-if="avatar" :to="`https://github.com/` + username" target="_blank" rel="noopener">
+    <img :src="avatar" class="avatar" />
+  </NuxtLink>
 </template>
 
 <style lang="scss">
