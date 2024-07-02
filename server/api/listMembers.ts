@@ -9,6 +9,7 @@ export default defineEventHandler(async event => {
   return octokit.orgs
     .listMembers({
       org: config.public.githubOrg,
+      per_page: 100,
     })
     .then(response => {
       return response.data;
