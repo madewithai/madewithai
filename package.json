@@ -12,7 +12,7 @@
   "dependencies": {
     "@nuxt/icon": "^1.10.3",
     "@nuxtjs/google-fonts": "^3.2.0",
-    "@octokit/rest": "^21.1.0",
+    "@octokit/rest": "^21.1.1",
     "nuxt": "^3.15.4",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
@@ -20,9 +20,9 @@
   "devDependencies": {
     "@iconify-json/pixelarticons": "^1.2.2",
     "@iconify-json/svg-spinners": "^1.2.2",
-    "@vueuse/core": "^12.5.0",
-    "@vueuse/nuxt": "^12.5.0",
-    "sass": "^1.83.4"
+    "@vueuse/core": "^12.7.0",
+    "@vueuse/nuxt": "^12.7.0",
+    "sass": "^1.85.0"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
