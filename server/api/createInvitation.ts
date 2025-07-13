@@ -1,4 +1,5 @@
 import { Octokit } from '@octokit/rest';
+import { defineEventHandler, readBody } from 'h3';
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig();
@@ -6,14 +7,23 @@ export default defineEventHandler(async event => {
     auth: config.public.githubToken,
   });
 
-  const body = await readBody(event);
+  try {
+    const body = await readBody(event);
+    if (!body.username) {
+      return { success: false, error: 'Missing username' };
+    }
 
-  return octokit.orgs
-    .createInvitation({ org: config.public.githubOrg, invitee_id: body.invitee_id })
-    .then(({ data }) => {
-      return { data: data.created_at };
-    })
-    .catch(error => {
-      return { error: error.response.data.errors[0].message };
+    const { data: user } = await octokit.users.getByUsername({ username: body.username });
+
+    const { data } = await octokit.orgs.createInvitation({
+      org: config.public.githubOrg,
+      invitee_id: user.id,
     });
+
+    return { success: true, invited_at: data.created_at };
+
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    return { success: false, error: message };
+  }
 });
