@@ -1,10 +1,10 @@
-interface UserResponse {
+export interface UserResponse {
   id: number;
   avatar: string;
-  error?: any;
+  error?: string;
 }
 
-interface InviteResponse {
+export interface InviteResponse {
   error?: string;
   message?: string;
 }
