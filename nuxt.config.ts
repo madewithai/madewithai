@@ -19,8 +19,5 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
-  nitro: {
-    preset: 'netlify',
-  },
   compatibilityDate: '2025-01-30',
 });
