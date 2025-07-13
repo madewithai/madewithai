@@ -1,4 +1,5 @@
 import { Octokit } from '@octokit/rest';
+import { defineEventHandler } from 'h3';
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig();
@@ -6,12 +7,15 @@ export default defineEventHandler(async event => {
     auth: config.public.githubToken,
   });
 
-  return octokit.orgs
-    .listMembers({
+  try {
+    const members = await octokit.paginate(octokit.orgs.listMembers, {
       org: config.public.githubOrg,
       per_page: 100,
-    })
-    .then(response => {
-      return response.data;
     });
+
+    return members;
+  } catch (error) {
+    const message = error.response?.data?.message || error.message;
+    return { error: message };
+  }
 });
